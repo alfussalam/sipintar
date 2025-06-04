@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background image with 5% opacity */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('img/rektorat unugiri.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.20;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: -1;
+        }
+
+        .logo {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            width: 100px;
+            height: 100px;
+            /* background: #00E5A0; */ /* Removed green background */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90vw;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pintar-logo {
+            color: #00E5A0;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pintar-logo img {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            z-index: 1;
+        }
+
+        .username-input::before {
+            content: '👤';
+        }
+
+        .password-input::before {
+            content: '🔒';
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00E5A0;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: #00E5A0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background: #00d090;
+        }
+
+        /* Desktop indicator */
+        .desktop-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop-indicator"></div>
+    
+    <div class="logo">
+        <img src="img/logo_unugiri-removebg-preview.png" alt="Logo UNUGIRI">
+    </div>
+    
+    <div class="login-container">
+        <div class="login-title">
+            <div class="pintar-logo">
+                <img src="img/sipintar.png" alt="Sipintar Logo">
+                <!-- Pintar text removed -->
+            </div>
+        </div>
+        
+        <form>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <div class="input-container username-input">
+                    <input type="text" id="username" class="form-input" placeholder="">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="input-container password-input">
+                    <input type="password" id="password" class="form-input" placeholder="">
+                </div>
+            </div>
+            
+            <button type="button" class="login-button" onclick="window.location.href='dashboard.html'">Login</button>
+        </form>
+    </div>
+</body>
+</html>

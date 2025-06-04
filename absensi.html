@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar - Absensi Harian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .header {
+            background: #00E5A0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .menu-icon::before {
+            content: '☰';
+            color: #00E5A0;
+            font-size: 16px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-icon::before {
+            content: '🚪';
+            color: white;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #00E5A0;
+            min-height: 100vh;
+            padding-top: 80px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            padding: 15px 20px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+            max-width: 1000px;
+            margin-right: auto;
+        }
+
+        .filters {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            min-width: 120px;
+        }
+
+        .filter-value {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            min-width: 120px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .attendance-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-color: #00E5A0 #f5f5f5;
+            scrollbar-width: thin;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar-thumb {
+            background: #00E5A0;
+            border-radius: 4px;
+        }
+        .attendance-table-wrapper::-webkit-scrollbar-track {
+            background: #f5f5f5;
+        }
+
+        .attendance-table {
+            min-width: 1200px;
+            width: max-content;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            display: grid;
+            grid-template-columns: 200px repeat(45, 1fr);
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .table-cell {
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #495057;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .table-cell:first-child {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 200px repeat(45, 1fr);
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table-row:hover {
+            background: #f8f9fa;
+        }
+
+        .table-data {
+            padding: 12px 8px;
+            text-align: center;
+            border-right: 1px solid #e9ecef;
+            color: #495057;
+        }
+
+        .table-data:first-child {
+            text-align: left;
+            padding-left: 20px;
+            font-weight: 500;
+        }
+
+        .attendance-mark {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .attendance-select {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .attendance-select:focus {
+            outline: none;
+            border-color: #00E5A0;
+        }
+
+        .desktop-indicator {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            font-size: 14px;
+            z-index: 200;
+        }
+
+        /* Samakan lebar summary dengan filter */
+        .attendance-table.summary-table {
+            width: 100%;
+            box-sizing: border-box;
+            min-width: unset;
+            max-width: unset;
+            max-height: 300px;
+            overflow-y: auto;
+            display: block;
+            margin-bottom: 24px;
+        }
+        .summary-table .table-header,
+        .summary-table .table-row {
+            display: grid;
+            grid-template-columns: 200px repeat(5, 1fr);
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop-indicator"></div>
+    
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon" onclick="window.location.href='dashboard.html'"></div>
+            <span class="header-title">DASHBOARD</span>
+        </div>
+        <div class="header-right">
+            <div class="user-icon" onclick="window.location.href='index.html'" title="Logout (Keluar)"></div>
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item active">
+                <div class="sidebar-icon">📋</div>
+                <span>absensi harian</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='proposal.html'">
+                <div class="sidebar-icon">📄</div>
+                <span>proposal kegiatan</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='laporan-mingguan.html'">
+                <div class="sidebar-icon">📊</div>
+                <span>laporan mingguan</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='laporan-akhir.html'">
+                <div class="sidebar-icon">📝</div>
+                <span>laporan akhir</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='luaran-kegiatan.html'">
+                <div class="sidebar-icon">📁</div>
+                <span>luaran kegiatan</span>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Keterangan</label>
+                <select class="filter-select" id="filterKeterangan" onchange="updateSummary()" title="Filter Keterangan">
+                    <option value="all">Semua</option>
+                    <option value="H">Hadir</option>
+                    <option value="S">Sakit</option>
+                    <option value="I">Izin</option>
+                    <option value="A">Absen</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Jumlah</label>
+                <span class="filter-value" id="totalCount">-</span>
+            </div>
+        </div>
+
+        <!-- Summary Table -->
+        <div class="attendance-table summary-table">
+            <div class="table-header">
+                <div class="table-cell">RINGKASAN</div>
+                <div class="table-cell">HADIR</div>
+                <div class="table-cell">SAKIT</div>
+                <div class="table-cell">IZIN</div>
+                <div class="table-cell">ABSEN</div>
+                <div class="table-cell">TOTAL</div>
+            </div>
+            <!-- 15 anggota -->
+            <script>
+                for (let member = 1; member <= 15; member++) {
+                    document.write(`
+                    <div class='table-row'>
+                        <div class='table-data'>Anggota ${member}</div>
+                        <div class='table-data' id='summary${member}-H'>0</div>
+                        <div class='table-data' id='summary${member}-S'>0</div>
+                        <div class='table-data' id='summary${member}-I'>0</div>
+                        <div class='table-data' id='summary${member}-A'>0</div>
+                        <div class='table-data' id='summary${member}-total'>0</div>
+            </div>
+                    `);
+                }
+            </script>
+        </div>
+
+        <!-- Detail Attendance Table -->
+        <div class="attendance-table-wrapper">
+        <div class="attendance-table">
+            <div class="table-header">
+                <div class="table-cell">NAMA ANGGOTA</div>
+                <script>
+                    for (let day = 1; day <= 45; day++) {
+                        document.write(`<div class='table-cell'>${day}</div>`);
+                    }
+                </script>
+            </div>
+            <script>
+                for (let member = 1; member <= 15; member++) {
+                    document.write(`<div class='table-row'>`);
+                    document.write(`<div class='table-data'>Anggota ${member}</div>`);
+                    for (let day = 1; day <= 45; day++) {
+                        document.write(`
+                        <div class='table-data'>
+                            <select class='attendance-select' onchange='updateSummary()' data-member='${member}' data-day='${day}'>
+                                <option value='H'>H</option>
+                                <option value='S'>S</option>
+                                <option value='I'>I</option>
+                                <option value='A'>A</option>
+                    </select>
+                </div>
+                        `);
+                    }
+                    document.write(`</div>`);
+                }
+            </script>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function updateSummary() {
+            for (let member = 1; member <= 15; member++) {
+                let counts = { H: 0, S: 0, I: 0, A: 0 };
+                const selects = document.querySelectorAll(`select[data-member='${member}']`);
+                selects.forEach(select => {
+                    counts[select.value]++;
+                });
+                document.getElementById(`summary${member}-H`).textContent = counts.H;
+                document.getElementById(`summary${member}-S`).textContent = counts.S;
+                document.getElementById(`summary${member}-I`).textContent = counts.I;
+                document.getElementById(`summary${member}-A`).textContent = counts.A;
+                document.getElementById(`summary${member}-total`).textContent = counts.H + counts.S + counts.I + counts.A;
+            }
+            const filterValue = document.getElementById('filterKeterangan').value;
+            if (filterValue !== 'all') {
+                let totalCount = 0;
+                const allSelects = document.querySelectorAll('.attendance-select');
+                allSelects.forEach(select => {
+                    if (select.value === filterValue) {
+                        totalCount++;
+                    }
+                });
+                document.getElementById('totalCount').textContent = totalCount;
+            } else {
+                document.getElementById('totalCount').textContent = '-';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSummary();
+        });
+    </script>
+</body>
+</html>

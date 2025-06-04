@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar - Luaran Kegiatan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .header {
+            background: #00E5A0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .menu-icon::before {
+            content: '☰';
+            color: #00E5A0;
+            font-size: 16px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-icon::before {
+            content: '🚪';
+            color: white;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #00E5A0;
+            min-height: 100vh;
+            padding-top: 80px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            padding: 15px 20px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+            display: flex;
+            gap: 30px;
+        }
+
+        .action-section {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .action-button {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .approve-button {
+            background: #28a745;
+            color: white;
+        }
+
+        .approve-button:hover {
+            background: #218838;
+        }
+
+        .resend-button {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .resend-button:hover {
+            background: #e0a800;
+        }
+
+    .upload-section {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 2px dashed #ddd;
+        text-align: center;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .upload-section:hover {
+        border-color: #00E5A0;
+        background: #f8fff8;
+    }
+
+    .upload-section.drag-over {
+        border-color: #00E5A0;
+        background: #f0fff0;
+        transform: scale(1.02);
+    }
+
+    .upload-icon {
+        width: 80px;
+        height: 80px;
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px auto;
+        font-size: 32px;
+    }
+    .upload-icon::before {
+        content: '📄';
+    }
+
+    .upload-divider {
+        width: 60px;
+        height: 3px;
+        background: #333;
+        margin: 20px auto;
+    }
+    .upload-text {
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .upload-subtitle {
+        font-size: 14px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    .file-types {
+        font-size: 12px;
+        color: #999;
+        margin-top: 15px;
+    }
+
+    .upload-progress {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #00E5A0;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+        width: 0%;
+    }
+
+    .progress-text {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .uploaded-files {
+        width: 100%;
+        margin-top: 20px;
+        display: none;
+    }
+
+    .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #e9ecef;
+    }
+
+    .file-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .file-icon {
+        font-size: 24px;
+    }
+
+    .file-details {
+        text-align: left;
+    }
+
+    .file-name {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .file-size {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .file-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .file-action-btn {
+        background: none;
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .view-btn:hover {
+        background: #e3f2fd;
+    }
+
+    .delete-btn:hover {
+        background: #ffebee;
+    }
+
+    .add-more-files {
+        padding: 15px;
+        background: #f8f9fa;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+    }
+
+    .add-more-files:hover {
+        border-color: #00E5A0;
+        color: #00E5A0;
+        background: #f8fff8;
+    }
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon" onclick="window.location.href='dashboard.html'"></div>
+            <span class="header-title">DASHBOARD</span>
+        </div>
+        <div class="header-right">
+            <div class="user-icon" onclick="window.location.href='index.html'" title="Logout"></div>
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item" onclick="window.location.href='absensi.html'">
+                <div class="sidebar-icon">📋</div>
+                <span>absensi harian</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='proposal.html'">
+                <div class="sidebar-icon">📄</div>
+                <span>proposal kegiatan</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='laporan-mingguan.html'">
+                <div class="sidebar-icon">📊</div>
+                <span>laporan mingguan</span>
+            </li>
+            <li class="sidebar-item" onclick="window.location.href='laporan-akhir.html'">
+                <div class="sidebar-icon">📝</div>
+                <span>laporan akhir</span>
+            </li>
+            <li class="sidebar-item active">
+                <div class="sidebar-icon">📁</div>
+                <span>luaran kegiatan</span>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+    <div class="upload-section" id="uploadSection">
+        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;" multiple>
+        <div class="upload-content" id="uploadContent">
+            <div class="upload-icon"></div>
+            <div class="upload-divider"></div>
+            <div class="upload-text">Upload File Luaran Kegiatan</div>
+            <div class="upload-subtitle">Drag & drop files here or click to browse</div>
+            <div class="file-types">Supported: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</div>
+        </div>
+        <div class="upload-progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Uploading...</div>
+        </div>
+        <div class="uploaded-files" id="uploadedFiles"></div>
+    </div>
+    
+    <div class="action-section">
+        <button class="action-button approve-button">Luaran Telah Disetujui</button>
+        <button class="action-button resend-button">Kirim Ulang Luaran</button>
+    </div>
+</main>
+
+<script>
+    const uploadSection = document.getElementById('uploadSection');
+    const fileInput = document.getElementById('fileInput');
+    const uploadContent = document.getElementById('uploadContent');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const uploadedFiles = document.getElementById('uploadedFiles');
+
+    uploadSection.addEventListener('click', () => {
+        if (!uploadProgress.style.display || uploadProgress.style.display === 'none') {
+            fileInput.click();
+        }
+    });
+
+    uploadSection.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadSection.classList.add('drag-over');
+    });
+
+    uploadSection.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadSection.classList.remove('drag-over');
+    });
+
+    uploadSection.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadSection.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        if (files.length === 0) return;
+
+        for (let file of files) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+                return;
+            }
+        }
+
+        uploadContent.style.display = 'none';
+        uploadProgress.style.display = 'block';
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    uploadProgress.style.display = 'none';
+                    displayUploadedFiles(files);
+                }, 500);
+            }
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+        }, 200);
+    }
+
+    function displayUploadedFiles(files) {
+        uploadedFiles.innerHTML = '';
+        uploadedFiles.style.display = 'block';
+
+        for (let file of files) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">${getFileIcon(file.type)}</div>
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="file-action-btn view-btn" onclick="viewFile('${file.name}')">👁️</button>
+                    <button class="file-action-btn delete-btn" onclick="deleteFile(this)">🗑️</button>
+                </div>
+            `;
+            uploadedFiles.appendChild(fileItem);
+        }
+
+        const addMoreBtn = document.createElement('div');
+        addMoreBtn.className = 'add-more-files';
+        addMoreBtn.innerHTML = '+ Add More Files';
+        addMoreBtn.onclick = () => fileInput.click();
+        uploadedFiles.appendChild(addMoreBtn);
+    }
+
+    function getFileIcon(fileType) {
+        if (fileType.includes('pdf')) return '📄';
+        if (fileType.includes('doc')) return '📝';
+        if (fileType.includes('image')) return '🖼️';
+        return '📎';
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function viewFile(fileName) {
+        alert(`Viewing file: ${fileName}`);
+    }
+
+    function deleteFile(button) {
+        if (confirm('Are you sure you want to delete this file?')) {
+            button.closest('.file-item').remove();
+        }
+    }
+</script>
+</body>
+</html>

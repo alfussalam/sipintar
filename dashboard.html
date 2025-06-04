@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #00E5A0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .menu-icon::before {
+            content: '☰';
+            color: #00E5A0;
+            font-size: 16px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-icon::before {
+            content: '🚪';
+            color: white;
+        }
+
+        .main-content {
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .menu-icon-large {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            position: relative;
+        }
+
+        .absensi-icon {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .absensi-icon::before {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f44336;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .absensi-icon::after {
+            content: '📋';
+        }
+
+        .proposal-icon {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .proposal-icon::before {
+            content: '📄';
+        }
+
+        .laporan-mingguan-icon {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .laporan-mingguan-icon::before {
+            content: '📊';
+        }
+
+        .laporan-akhir-icon {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .laporan-akhir-icon::before {
+            content: '📝';
+        }
+
+        .luaran-icon {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .luaran-icon::before {
+            content: '📁';
+        }
+
+        .menu-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .desktop-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Grid layout adjustments */
+        .menu-grid .menu-item:nth-child(4) {
+            grid-column: 1;
+        }
+
+        .menu-grid .menu-item:nth-child(5) {
+            grid-column: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop-indicator"></div>
+    
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon"></div>
+            <span class="header-title">DASHBOARD</span>
+        </div>
+        <div class="header-right">
+            <div class="user-icon" onclick="window.location.href='index.html'" title="Logout (Keluar)"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="menu-grid">
+            <a href="absensi.html" class="menu-item">
+                <div class="menu-icon-large absensi-icon"></div>
+                <div class="menu-title">ABSENSI HARIAN</div>
+            </a>
+            
+            <a href="proposal.html" class="menu-item">
+                <div class="menu-icon-large proposal-icon"></div>
+                <div class="menu-title">PROPOSAL KEGIATAN</div>
+            </a>
+            
+            <a href="laporan-mingguan.html" class="menu-item">
+                <div class="menu-icon-large laporan-mingguan-icon"></div>
+                <div class="menu-title">LAPORAN MINGGUAN</div>
+            </a>
+            
+            <a href="laporan-akhir.html" class="menu-item">
+                <div class="menu-icon-large laporan-akhir-icon"></div>
+                <div class="menu-title">LAPORAN AKHIR</div>
+            </a>
+            
+            <a href="luaran-kegiatan.html" class="menu-item">
+                <div class="menu-icon-large luaran-icon"></div>
+                <div class="menu-title">LUARAN KEGIATAN</div>
+            </a>
+        </div>
+    </main>
+</body>
+</html>
